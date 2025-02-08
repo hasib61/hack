@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sikkim99 Wingo Prediction</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Roboto Mono', monospace;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            position: relative;
+            overflow: hidden;
+            background: #222;
+            color: #00ff00;
+        }
+        .square {
+            width: 300px;
+            height: 450px;
+            border-radius: 15px;
+            border: 2px solid #007BFF;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+            background-color: rgba(0, 0, 0, 0.8);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+            position: relative;
+            z-index: 10;
+        }
+        #title {
+            font-size: 20px;
+            font-weight: bold;
+            color: #00ff00;
+            margin-top: 40px;
+            text-transform: uppercase;
+            text-shadow: 0 0 2px #fff;
+        }
+        #prediction {
+            font-size: 24px;
+            font-weight: bold;
+            margin: 20px 0;
+            text-align: center;
+            text-transform: uppercase;
+            opacity: 0;
+            transform: scale(0.5);
+            animation: fadeInScale 1s forwards;
+        }
+        @keyframes fadeInScale {
+            0% {
+                opacity: 0;
+                transform: scale(0.5);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+        #currentPeriod {
+            font-size: 14px;
+            color: #fff;
+            text-transform: uppercase;
+            text-shadow: 0 0 2px #fff;
+        }
+        input[type="number"] {
+            padding: 10px;
+            width: 80%;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin-top: 20px;
+            font-size: 14px;
+            color: #00ff00;
+            background: rgba(0, 0, 0, 0.5);
+            text-transform: uppercase;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            margin-top: 10px;
+            font-size: 14px;
+            text-transform: uppercase;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        #timer {
+            font-size: 14px;
+            color: #ff0000;
+            margin-top: 10px;
+        }
+        /* Alert Box for Period Validation */
+        .alert-box {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: rgba(0, 0, 0, 0.8);
+            color: #fff;
+            padding: 15px;
+            border-radius: 10px;
+            display: none;
+            width: 80%;
+            text-align: center;
+            font-size: 16px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.6);
+        }
+        .alert-box.show {
+            display: block;
+        }
+        #particles-js {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: 1;
+        }
+        /* Telegram button fixed at the top */
+        #joinTelegramBtn {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #28a745;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 10px;
+            font-size: 16px;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+        }
+        #joinTelegramBtn:hover {
+            background-color: #218838;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="particles-js"></div>
+    
+    <div class="square">
+        <div id="title">BDT GAME HACK</div>
+        <div id="prediction">Prediction will appear here</div>
+        <div id="currentPeriod">Current Period: -</div>
+        <input type="number" id="period" min="1" required placeholder="Enter Period Number">
+        <button id="startBtn" onclick="startPrediction()">Start Prediction</button>
+        <div id="timer"></div>
+    </div>
+
+    <!-- Alert box for "Please enter a valid period" -->
+    <div class="alert-box" id="alertBox">Please enter a valid period number!</div>
+
+    <!-- Join Telegram Button -->
+    <button id="joinTelegramBtn" onclick="window.open('https://t.me/+ZUUzdVW0JYU1YmZl', '_blank')">Join Telegram</button>
+
+    <audio id="background-music" autoplay loop>
+        <source src="your-music-file.mp3" type="audio/mpeg">
+        Your browser does not support the audio tag.
+    </audio>
+
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <script>
+        particlesJS.load('particles-js', 'https://cdn.jsdelivr.net/particles.js/2.0.0/particles.json', function() {
+            console.log('callback - particles.js config loaded');
+        });
+
+        let currentPeriod;
+        let cooldown = false;
+
+        function startPrediction() {
+            if (cooldown) {
+                showAlert("You need to wait 10 seconds before trying again!");
+                return;
+            }
+
+            currentPeriod = parseInt(document.getElementById('period').value);
+            if (!isNaN(currentPeriod)) {
+                document.getElementById('currentPeriod').innerText = `Current Period: ${currentPeriod}`;
+
+                // Start cooldown timer
+                cooldown = true;
+                let timer = 20;
+                const timerInterval = setInterval(() => {
+                    document.getElementById('timer').innerText = `Wait for next result: ${timer} seconds`;
+                    timer--;
+                    if (timer < 0) {
+                        clearInterval(timerInterval);
+                        document.getElementById('timer').innerText = "";
+                        cooldown = false; // Reset cooldown
+                    }
+                }, 1000);
+
+                // Simulate prediction after delay
+                setTimeout(() => {
+                    const prediction = Math.random() < 0.5 ? "Big" : "Small";
+                    document.getElementById('prediction').innerText = `Period ${currentPeriod}: ${prediction}`;
+                }, 2000); // 2 seconds delay for prediction
+            } else {
+                showAlert("Please enter a valid period number!");
+            }
+        }
+
+        function showAlert(message) {
+            const alertBox = document.getElementById('alertBox');
+            alertBox.innerText = message; // Set the custom message
+            alertBox.classList.add('show');
+            setTimeout(() => {
+                alertBox.classList.remove('show');
+            }, 3000); // Show alert for 3 seconds
+        }
+    </script>
+
+</body>
+</html>
